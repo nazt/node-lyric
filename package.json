@@ -3,7 +3,8 @@
   "dependencies": {
     "lodash": "0.4.2",
     "google": "0.0.2",
-    "jsdom": "*"
+    "url": "0.7.9",
+    "jsdom": "0.2.15"
   },
   "version": "0.0.1",
   "description": "Get lyric from google",
