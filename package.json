@@ -16,6 +16,10 @@
   "engines": {
     "node": "*"
   },
+  "repository":   {
+    "type": "git",
+    "url": "git://github.com/nazt/node-lyric.git"
+  },
   "homepage" : [
               "https://github.com/nazt/node-lyric"
   ],
