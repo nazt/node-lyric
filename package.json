@@ -1,0 +1,23 @@
+{
+  "name": "lyric",
+  "dependencies": {
+    "lodash": "0.4.2",
+    "google": "0.0.2",
+    "jsdom": "*"
+  },
+  "version": "0.0.1",
+  "description": "Get lyric from google",
+  "keywords" : ["google", "search", "lyric", "scraper", "screen"],
+  "bin": {
+    "lyric": "./lyric.js"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  },
+  "homepage" : [
+              "https://github.com/nazt/node-lyric"
+  ],
+  "author": "Nat Weerawan <nat.wrw@gmail.com> (http://www.together.in.th/)"
+}
