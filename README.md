@@ -9,3 +9,6 @@
 * Add tests
 * Clean code
 * Add more lyric processor
+
+#NOTE
+experiment & personal use only 
