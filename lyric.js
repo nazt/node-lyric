@@ -1,12 +1,12 @@
 #!/usr/bin/env node 
 
 var google = require('google')
-,   jsdom = require('jsdom')
-,   fs = require('fs')
-,   _ = require('lodash')
-,   url = require('url')
-,   args = process.argv.slice(2)
-,   keyword = args.join(' ') + ' ' + 'lyrics'
+  , jsdom = require('jsdom')
+  , fs = require('fs')
+  , _ = require('lodash')
+  , url = require('url')
+  , args = process.argv.slice(2)
+  , keyword = args.join(' ') + ' ' + 'lyrics'
 
 
 processorService = function (processorName, content, $) {

@@ -4,7 +4,8 @@
     "lodash": "0.4.2",
     "google": "0.0.2",
     "url": "0.7.9",
-    "jsdom": "0.2.15"
+    "jsdom": "0.2.15",
+    "applescript", "0.2.1"
   },
   "version": "0.0.2",
   "description": "Get lyric from google",
