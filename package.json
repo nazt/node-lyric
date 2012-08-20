@@ -8,7 +8,7 @@
     "applescript": "0.2.1",
     "async": "0.1.22"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Get lyric from google",
   "keywords" : ["google", "search", "lyric", "scraper", "screen"],
   "bin": {
