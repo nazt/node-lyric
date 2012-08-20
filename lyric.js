@@ -72,12 +72,12 @@ if (argv == 0) {
             callback(err, null);
           }
           else {
-            callback(null, rtn );
+            callback(null, rtn);
           }
         });
       }],
-      function(err, results){
-        var keyword = results.join (' ')
+      function(err, results) {
+        var keyword = results.join (' ');
         findLyric(keyword);
       }
       
@@ -89,7 +89,7 @@ else {
 
 return 0;
 function findLyric (keyword) {
-    console.log ("FINDING ", keyword);
+    // console.log ("FINDING ", keyword);
     google(keyword, function (err, next, links) {
         var reqObj
           , utilService;
