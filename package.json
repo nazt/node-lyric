@@ -6,7 +6,7 @@
     "url": "0.7.9",
     "jsdom": "0.2.14",
     "applescript": "0.2.1",
-    "async": "0.1.22",
+    "async": "0.1.22"
   },
   "version": "0.0.6",
   "description": "Get lyric from google",
