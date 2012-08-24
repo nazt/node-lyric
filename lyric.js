@@ -8,12 +8,29 @@ var google = require('google')
   , url = require('url')
   , async = require('async')
   , args = process.argv.slice(2)
-  , argv = args.length
-  , keyword = args.join(' ') + ' ' + 'lyrics';
+  , argc = args.length
+  , keyword
+  , argv;
+
+  argv = require('optimist')
+    .usage('Usage: $0 keyword [options]')
+    .alias('c', 'clean')
+    .alias('i', 'itunes')
+    .alias('t', 'title')
+    .describe('i', 'Get song name from itunes')
+    .describe('c', 'Show only lyric')
+    .describe('t', 'Show song title')
+    .check(function (argv) {
+      if ( !argv.i && _.isEmpty(argv._)) {
+        throw ''
+      }
+    }).argv
+
 
 
 processorService = function (processorName, content, $) {
   var processor = { };
+  
   processor['metrolyrics.com'] = function (content) {
     $('#lyrics-body p br').parent().contents().each(function (k, obj) {
         content = obj.textContent; 
@@ -26,10 +43,9 @@ processorService = function (processorName, content, $) {
         }
     });
   }
+
   return {
-    printLyric: function() {
-      processor[processorName]();
-    }
+    printLyric: function() { processor[processorName](); }
   }
 }
 
@@ -52,7 +68,8 @@ Util = function () {
   }
 }
 
-if (argv == 0) {
+
+if (argv.i) {
   async.parallel([
       function(callback) {
         var song_name = 'tell application "iTunes" to name of current track as string';
@@ -84,12 +101,15 @@ if (argv == 0) {
   );
 }
 else {
+  keyword = argv['_'].join(' ') + ' ' + 'lyrics';
   findLyric(keyword);
 }
 
 return 0;
 function findLyric (keyword) {
-    // console.log ("FINDING ", keyword);
+    if (!argv.clean || !argv.c) {
+      console.log ("FINDING ", keyword);
+    }
     google(keyword, function (err, next, links) {
         var reqObj
           , utilService;
@@ -110,12 +130,12 @@ function findLyric (keyword) {
                   , processor;
 
                 processor = processorService(reqObj.processor, content, $);
-                console.log("--------------------------------------------------")
-                console.log("- " + reqObj.title + " -");
-                console.log("--------------------------------------------------\n")
-
+                if (argv.t || !argv.c) {
+                  console.log("--------------------------------------------------")
+                  console.log("- " + reqObj.title + " -");
+                  console.log("--------------------------------------------------\n")
+                }
                 processor.printLyric();
-                
               }
             });
         }
