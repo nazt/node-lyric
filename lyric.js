@@ -1,16 +1,17 @@
 #!/usr/bin/env node 
 
 var google = require('google')
+  , fs = require('fs')
   , jsdom = require('jsdom')
   , applescript = require("applescript")
-  , fs = require('fs')
   , _ = require('lodash')
   , url = require('url')
   , async = require('async')
+  , jquery = fs.readFileSync("./jquery-1.7.2.min.js").toString()
   , args = process.argv.slice(2)
   , argc = args.length
+  , argv
   , keyword
-  , argv;
 
   argv = require('optimist')
     .usage('Usage: $0 keyword [options]')
@@ -25,8 +26,6 @@ var google = require('google')
         throw ''
       }
     }).argv
-
-
 
 processorService = function (processorName, content, $) {
   var processor = { };
@@ -106,23 +105,24 @@ else {
 }
 
 return 0;
+
 function findLyric (keyword) {
     if (!argv.clean || !argv.c) {
-      console.log ("FINDING ", keyword);
+      console.log ("Looking for [", keyword, "]");
     }
     google(keyword, function (err, next, links) {
         var reqObj
           , utilService;
 
         if (err) {
-            console.error(err);
+          console.error(err);
         }
         else {
             utilService = new Util();
             reqObj = utilService.metrolyrics(links);
             jsdom.env({
               html: reqObj.link,
-              scripts: [ 'http://code.jquery.com/jquery-1.7.2.min.js' ],
+              src: [ jquery ],
               done: function(errors, window) {
                 var $ = window.$
                   , content
@@ -130,6 +130,7 @@ function findLyric (keyword) {
                   , processor;
 
                 processor = processorService(reqObj.processor, content, $);
+
                 if (argv.t || !argv.c) {
                   console.log("--------------------------------------------------")
                   console.log("- " + reqObj.title + " -");
