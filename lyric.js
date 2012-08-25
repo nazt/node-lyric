@@ -2,12 +2,14 @@
 
 var google = require('google')
   , fs = require('fs')
+  , path = require('path')
   , jsdom = require('jsdom')
   , applescript = require("applescript")
   , _ = require('lodash')
   , url = require('url')
   , async = require('async')
-  , jquery = fs.readFileSync("./jquery-1.7.2.min.js").toString()
+  , lib  = path.join(path.dirname(fs.realpathSync(__filename)), '/lib')
+  , jquery = fs.readFileSync(lib + "/jquery-1.7.2.min.js").toString()
   , args = process.argv.slice(2)
   , argc = args.length
   , argv
