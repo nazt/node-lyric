@@ -14,6 +14,7 @@ var google = require('google')
   , argc = args.length
   , argv
   , keyword
+  , Processor
 
   argv = require('optimist')
     .usage('Usage: $0 keyword [options]')
@@ -29,10 +30,16 @@ var google = require('google')
       }
     }).argv
 
-processorService = function (processorName, content, $) {
-  var processor = { };
-  
-  processor['metrolyrics.com'] = function (content) {
+Processor = function() {
+  var urlList;
+  var processor = {};
+  var processorList
+  var process;
+  var mapped;
+  var $;
+
+  processor['metrolyrics.com'] = function () {
+    var content
     $('#lyrics-body p br').parent().contents().each(function (k, obj) {
         content = obj.textContent; 
         hasLink = content.indexOf("From:") !== -1
@@ -45,30 +52,37 @@ processorService = function (processorName, content, $) {
     });
   }
 
-  return {
-    printLyric: function() { processor[processorName](); }
-  }
-}
+  processorList = _.keys(processor)
 
-Util = function () {
-  this.metrolyrics = function (links) {
-    return _.find(links, function (page) { 
-    var processor = url.parse(page.link).hostname
-    ,   startWithPrefix = /^www.(.*)/g
-    ,   match = startWithPrefix.exec(processor);
-
-    if (match === null) {
-        console.log("unmatch .... ", processor); 
-    }
-    else { 
-        processor = match[1];
-    } 
-        page.processor = processor
-        return processor == 'metrolyrics.com'; 
+  process = function() {
+    mapped = urlList.filter(function(obj) {
+      if (!obj.link) { return false; }
+      var hostname = url.parse(obj.link).hostname
+        , startWithPrefix = /^www.(.*)/g
+        , match = startWithPrefix.exec(hostname);
+      obj.processor = match && match[1]
+      return match && _.contains(processorList, match[1])
     });
   }
-}
 
+  this.setLinks = function(urls) {
+    // urlList = _.pluck(urls, 'link');
+    urlList = urls;
+    process();
+  }
+
+  this.getReqObj = function () {
+    return mapped[0];
+  }
+
+  this.printLyric = function ($$) {
+    $ = $$;
+    // console.log(mapped[0].processor)
+    var processorName = mapped[0].processor
+    processor[processorName]();
+  }
+
+}
 
 if (argv.i) {
   async.parallel([
@@ -109,36 +123,37 @@ else {
 return 0;
 
 function findLyric (keyword) {
-    if (!argv.clean || !argv.c) {
+    if (!argv.c) {
       console.log ("Looking for [", keyword, "]");
     }
     google(keyword, function (err, next, links) {
         var reqObj
-          , utilService;
+          , processor = new Processor;
 
         if (err) {
           console.error(err);
         }
         else {
-            utilService = new Util();
-            reqObj = utilService.metrolyrics(links);
+            processor.setLinks(links)
+            reqObj = processor.getReqObj()
+            if (!reqObj) {
+              console.log("NOT FOUND!")
+              return false;
+            }
             jsdom.env({
               html: reqObj.link,
               src: [ jquery ],
               done: function(errors, window) {
                 var $ = window.$
                   , content
-                  , hasLink
-                  , processor;
-
-                processor = processorService(reqObj.processor, content, $);
+                  , hasLink;
 
                 if (argv.t || !argv.c) {
                   console.log("--------------------------------------------------")
                   console.log("- " + reqObj.title + " -");
                   console.log("--------------------------------------------------\n")
                 }
-                processor.printLyric();
+                processor.printLyric($);
               }
             });
         }
