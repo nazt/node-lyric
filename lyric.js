@@ -1,22 +1,20 @@
 #!/usr/bin/env node 
 
 var google = require('google')
+var jsdom = require('jsdom');
+var applescript = require("applescript");
+var _ = require('lodash');
+var url = require('url');
+var async = require('async');
+var keyword;
+var Processor;
+var path = require('path')
   , fs = require('fs')
-  , path = require('path')
-  , jsdom = require('jsdom')
-  , applescript = require("applescript")
-  , _ = require('lodash')
-  , url = require('url')
-  , async = require('async')
   , lib  = path.join(path.dirname(fs.realpathSync(__filename)), '/lib')
   , jquery = fs.readFileSync(lib + "/jquery-1.7.2.min.js").toString()
-  , args = process.argv.slice(2)
+var args = process.argv.slice(2)
   , argc = args.length
-  , argv
-  , keyword
-  , Processor
-
-  argv = require('optimist')
+  , argv = require('optimist')
     .usage('Usage: $0 keyword [options]')
     .alias('c', 'clean')
     .alias('i', 'itunes')
@@ -110,7 +108,6 @@ if (argv.i) {
         var keyword = results.join (' ') + " lyrics";
         findLyric(keyword);
       }
-      
   );
 }
 else {
