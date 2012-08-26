@@ -1,22 +1,20 @@
 #!/usr/bin/env node 
 
-var google = require('google');
-var fs = require('fs');
-var path = require('path');
+var google = require('google')
 var jsdom = require('jsdom');
 var applescript = require("applescript");
 var _ = require('lodash');
 var url = require('url');
 var async = require('async');
-var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '/lib');
-var jquery = fs.readFileSync(lib + "/jquery-1.7.2.min.js").toString();
-var args = process.argv.slice(2);
-var argc = args.length;
-var argv;
 var keyword;
 var Processor;
-
-  argv = require('optimist')
+var path = require('path')
+  , fs = require('fs')
+  , lib  = path.join(path.dirname(fs.realpathSync(__filename)), '/lib')
+  , jquery = fs.readFileSync(lib + "/jquery-1.7.2.min.js").toString()
+var args = process.argv.slice(2)
+  , argc = args.length
+  , argv = require('optimist')
     .usage('Usage: $0 keyword [options]')
     .alias('c', 'clean')
     .alias('i', 'itunes')
