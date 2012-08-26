@@ -75,13 +75,11 @@ Processor = function() {
     return mapped[0];
   }
 
-  this.printLyric = function ($$) {
-    $ = $$;
-    // console.log(mapped[0].processor)
+  this.printLyric = function (jQuery) {
     var processorName = mapped[0].processor
+    $ = jQuery;
     processor[processorName]();
   }
-
 }
 
 if (argv.i) {
@@ -109,7 +107,7 @@ if (argv.i) {
         });
       }],
       function(err, results) {
-        var keyword = results.join (' ');
+        var keyword = results.join (' ') + " lyrics";
         findLyric(keyword);
       }
       
