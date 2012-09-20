@@ -9,9 +9,9 @@
     "async": "0.1.22",
     "optimist": "0.3.4"
   },
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Get lyric from google",
-  "keywords" : ["google", "search", "lyric", "scraper", "screen"],
+  "keywords" : ["google", "search", "lyric", "scraper", "screen", "lyric-terminal"],
   "bin": {
     "lyric": "./lyric.js"
   },
