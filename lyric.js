@@ -15,12 +15,14 @@ var path = require('path')
 var args = process.argv.slice(2)
   , argc = args.length
   , argv = require('optimist')
-    .usage('Usage: $0 keyword [options]')
+    .usage('Usage: $0 [keyword] [options]')
     .alias('c', 'clean')
     .alias('i', 'itunes')
+    .alias('s', 'set')
     .alias('t', 'title')
     .describe('i', 'Get song name from itunes')
     .describe('c', 'Show only lyric')
+    .describe('s', 'Set lyric of current song to itunes')
     .describe('t', 'Show song title')
     .check(function (argv) {
       if ( !argv.i && _.isEmpty(argv._)) {
@@ -38,16 +40,20 @@ Processor = function() {
 
   processor['metrolyrics.com'] = function () {
     var content
+      , hasLink
+      forPrint = '';
     $('#lyrics-body p br').parent().contents().each(function (k, obj) {
         content = obj.textContent; 
         hasLink = content.indexOf("From:") !== -1
         if (obj._nodeName === 'br') {
-          console.log ("\n");
+          forPrint += "\n\n";
         }
         else if (obj._nodeName === 'span' && !hasLink) {
-          console.log(content); 
+          forPrint += content;
+          forPrint += "\n";
         }
     });
+    return forPrint;
   }
 
   processorList = _.keys(processor)
@@ -64,7 +70,6 @@ Processor = function() {
   }
 
   this.setLinks = function(urls) {
-    // urlList = _.pluck(urls, 'link');
     urlList = urls;
     process();
   }
@@ -74,9 +79,14 @@ Processor = function() {
   }
 
   this.printLyric = function (jQuery) {
-    var processorName = mapped[0].processor
+    // bind jQuery
     $ = jQuery;
-    processor[processorName]();
+
+    var processorName = mapped[0].processor
+      , processed = processor[processorName]();
+
+
+    console.log(processed);
   }
 }
 
@@ -129,8 +139,8 @@ function findLyric (keyword) {
           console.error(err);
         }
         else {
-            processor.setLinks(links)
-            reqObj = processor.getReqObj()
+            processor.setLinks(links);
+            reqObj = processor.getReqObj();
             if (!reqObj) {
               console.log("NOT FOUND!")
               return false;
