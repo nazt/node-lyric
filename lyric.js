@@ -85,7 +85,22 @@ Processor = function() {
     var processorName = mapped[0].processor
       , processed = processor[processorName]();
 
-
+    if (argv.s) {
+      var script = 'tell application "iTunes" to set lyrics of current track to "' + processed + '"' 
+      applescript.execString(script, function(err, rtn) {
+        if (err) {
+          console.log("===============");
+          console.log("SET LYRIC ERROR!");
+          console.log(err);
+          console.log("===============");
+        }
+        else {
+          console.log("===============");
+          console.log("SET LYRIC DONE!");
+          console.log("===============");
+        }
+      })
+    }
     console.log(processed);
   }
 }
