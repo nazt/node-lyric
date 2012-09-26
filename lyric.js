@@ -41,7 +41,7 @@ Processor = function() {
   processor['metrolyrics.com'] = function () {
     var content
       , hasLink
-      forPrint = ''
+      , forPrint = ''
     $('#lyrics-body p br').parent().contents().each(function (k, obj) {
         content = obj.textContent 
         hasLink = content.indexOf("From:") !== -1
