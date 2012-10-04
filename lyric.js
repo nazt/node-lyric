@@ -54,7 +54,9 @@ if (argv.i) {
         if (!argv.c) {
           console.log ("Looking for [", keyword, "]")
         }
+
         finder.findLyric(keyword, function (err, lyric) {
+          setLyricConditionally(lyric)
           console.log(lyric)
         })
       }
@@ -66,6 +68,7 @@ else {
       console.log ("Looking for [", keyword, "]")
     }
     finder.findLyric(keyword, function(err, lyric) {
+      setLyricConditionally(lyric)
       console.log(lyric)
     })
 }
@@ -74,4 +77,23 @@ return 0
 
 function printLyric (lyric) {
   console.log(lyric)
+}
+
+function setLyricConditionally(lyric) {
+  if (argv.s) {
+    var script = 'tell application "iTunes" to set lyrics of current track to "' + lyric + '"'
+    applescript.execString(script, function(err, rtn) {
+      if (err) {
+        console.log("===============")
+        console.log("SET LYRIC ERROR!")
+        console.log(err)
+        console.log("===============")
+      }
+      else {
+        console.log("===============")
+        console.log("SET LYRIC DONE!")
+        console.log("===============")
+      }
+    })
+  }
 }
