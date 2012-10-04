@@ -2,7 +2,6 @@
 
 var applescript = require("applescript")
 var _ = require('lodash')
-var url = require('url')
 var async = require('async')
 var keyword
 var finder = require('lyric-finder')
