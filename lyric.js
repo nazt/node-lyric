@@ -1,4 +1,4 @@
-#!/usr/bin/env node 
+#!/usr/bin/env node
 
 var google = require('google')
 var jsdom = require('jsdom')
@@ -43,7 +43,7 @@ Processor = function() {
       , hasLink
       , forPrint = ''
     $('#lyrics-body p br').parent().contents().each(function (k, obj) {
-        content = obj.textContent 
+        content = obj.textContent
         hasLink = content.indexOf("From:") !== -1
         if (obj._nodeName === 'br') {
           forPrint += "\n\n"
@@ -78,30 +78,14 @@ Processor = function() {
     return mapped[0]
   }
 
-  this.printLyric = function (jQuery) {
+  this.getLyric = function (jQuery) {
     // bind jQuery
     $ = jQuery
 
     var processorName = mapped[0].processor
       , processed = processor[processorName]()
 
-    if (argv.s) {
-      var script = 'tell application "iTunes" to set lyrics of current track to "' + processed + '"' 
-      applescript.execString(script, function(err, rtn) {
-        if (err) {
-          console.log("===============")
-          console.log("SET LYRIC ERROR!")
-          console.log(err)
-          console.log("===============")
-        }
-        else {
-          console.log("===============")
-          console.log("SET LYRIC DONE!")
-          console.log("===============")
-        }
-      })
-    }
-    console.log(processed)
+    return processed
   }
 }
 
@@ -131,21 +115,30 @@ if (argv.i) {
       }],
       function(err, results) {
         var keyword = results.join (' ') + " lyrics"
-        findLyric(keyword)
+        if (!argv.c) {
+          console.log ("Looking for [", keyword, "]")
+        }
+        findLyric(keyword, function (lyric) {
+          console.log(lyric)
+        })
       }
   )
 }
 else {
-  keyword = argv['_'].join(' ') + ' ' + 'lyrics'
-  findLyric(keyword)
+    keyword = argv['_'].join(' ') + ' ' + 'lyrics'
+    if (!argv.c) {
+      console.log ("Looking for [", keyword, "]")
+    }
+    findLyric(keyword, function(lyric) { console.log(lyric) })
 }
 
 return 0
 
-function findLyric (keyword) {
-    if (!argv.c) {
-      console.log ("Looking for [", keyword, "]")
-    }
+function printLyric (lyric) {
+  console.log(lyric)
+}
+
+function findLyric (keyword, callback) {
     google(keyword, function (err, next, links) {
         var reqObj
           , processor = new Processor
@@ -173,9 +166,28 @@ function findLyric (keyword) {
                   console.log("- " + reqObj.title + " -")
                   console.log("--------------------------------------------------\n")
                 }
-                processor.printLyric($)
+                var lyric = processor.getLyric($)
+                if (argv.s) {
+                  var script = 'tell application "iTunes" to set lyrics of current track to "' + lyric + '"'
+                  applescript.execString(script, function(err, rtn) {
+                    if (err) {
+                      console.log("===============")
+                      console.log("SET LYRIC ERROR!")
+                      console.log(err)
+                      console.log("===============")
+                    }
+                    else {
+                      console.log("===============")
+                      console.log("SET LYRIC DONE!")
+                      console.log("===============")
+                    }
+                  })
+                }
+                callback && callback(lyric)
               }
             })
         }
     })
 }
+
+exports.findLyric = findLyric
