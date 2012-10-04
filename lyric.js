@@ -57,7 +57,7 @@ if (argv.i) {
 
         finder.findLyric(keyword, function (err, lyric) {
           setLyricConditionally(lyric)
-          console.log(lyric)
+          printLyric(lyric)
         })
       }
   )
@@ -69,7 +69,7 @@ else {
     }
     finder.findLyric(keyword, function(err, lyric) {
       setLyricConditionally(lyric)
-      console.log(lyric)
+      printLyric(lyric)
     })
 }
 
