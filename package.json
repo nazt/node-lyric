@@ -2,14 +2,12 @@
   "name": "lyric",
   "dependencies": {
     "lodash": "0.4.2",
-    "google": "0.0.2",
-    "url": "0.7.9",
-    "jsdom": "0.2.14",
     "applescript": "0.2.1",
     "async": "0.1.22",
-    "optimist": "0.3.4"
+    "optimist": "0.3.4",
+    "lyric-finder": "*"
   },
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Get lyric from google",
   "keywords" : ["google", "search", "lyric", "scraper", "screen", "lyric-terminal"],
   "bin": {
