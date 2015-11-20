@@ -1,8 +1,8 @@
-#INSTALLATION
+# INSTALLATION
 
 `npm install -g lyric`
 
-#USAGE
+# USAGE
     Usage: /usr/local/bin/lyric [keyword] [options]
 
     Options:
@@ -11,7 +11,7 @@
       -s, --set     Set lyric of current song to itunes
       -t, --title   Show song title
 
-#TODO
+# TODO
 
 * Add tests
 * Clean code
