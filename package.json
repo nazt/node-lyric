@@ -1,7 +1,7 @@
 {
   "name": "lyric",
   "dependencies": {
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "applescript": "0.2.1",
     "async": "0.1.22",
     "optimist": "0.3.4",
